@@ -1,0 +1,50 @@
+{
+  "general": {
+    "trustedWorkspaces": [
+      "./"
+    ],
+    "permissions": {
+      "allow": [
+        "command(git)",
+        "command(npm)",
+        "command(node)",
+        "command(docker)",
+        "command(docker compose)",
+        "command(docker-compose)",
+        "command(compose)",
+        "command(npx)"
+      ],
+      "deny": [
+        "command(rm -rf)"
+      ]
+    }
+  },
+  "indexing": {
+    "exclude": [
+      "**/.env",
+      "**/.env.*",
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**",
+      "**/bin/**",
+      "**/obj/**",
+      "**/.editorconfig",
+      "**/package-lock.json",
+      "**/yarn.lock",
+      "**/pnpm-lock.yaml",
+      "**/coverage/**",
+      "**/.DS_Store",
+      "**/*.png",
+      "**/*.jpg",
+      "**/*.jpeg",
+      "**/*.svg",
+      "**/*.gif",
+      "**/*.ico",
+      "**/postgres-data/**",
+      "**/redis-data/**",
+      "**/.docker/**",
+      "**/.vite/**",
+      "**/*.log"
+    ]
+  }
+}

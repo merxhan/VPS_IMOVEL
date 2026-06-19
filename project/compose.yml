@@ -1,0 +1,66 @@
+name: inmovel
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: inmovel-db
+    environment:
+      POSTGRES_DB: sici
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Sao_Paulo
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    networks:
+      - inmovel-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sici"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: inmovel-backend
+    volumes:
+      - uploads-data:/app/uploads
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/sici?schema=public
+      JWT_SECRET: supersecretinmobrandkey123!
+      PORT: 3000
+      TZ: America/Sao_Paulo
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - inmovel-net
+    ports:
+      - "3001:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: inmovel-frontend
+    environment:
+      VITE_API_URL: /api
+      NODE_ENV: production
+    depends_on:
+      - backend
+    networks:
+      - inmovel-net
+    ports:
+      - "8081:5173"
+
+volumes:
+  postgres-data:
+  uploads-data:
+
+networks:
+  inmovel-net:
+    name: inmovel-net

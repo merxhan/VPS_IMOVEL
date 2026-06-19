@@ -1,0 +1,62 @@
+# ==========================================
+# Entorno de Desarrollo y Editores (General)
+# ==========================================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Logs y Monitoreo
+# ==========================================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# Módulos y Dependencias
+# ==========================================
+node_modules/
+jspm_packages/
+web_modules/
+dist/
+
+# ==========================================
+# Variables de Entorno y Secretos (Crítico)
+# ==========================================
+.env
+.env.local
+!.env.homologacion
+.env.produccion
+*.env
+
+# ==========================================
+# Frontend (Vue 3 / Vite)
+# ==========================================
+#project/frontend/dist
+
+# ==========================================
+# Backend (NestJS / TypeORM)
+# ==========================================
+#project/backend/dist
+
+# ==========================================
+# Persistencia y Datos Locales (Docker)
+# ==========================================
+# Si mapeas volúmenes de PostgreSQL o Redis a directorios locales
+postgres_data/
+redis_data/
+.docker-data/
+
+# ==========================================
+# Directorios Específicos del Proyecto
+# ==========================================
+#.gemini/
