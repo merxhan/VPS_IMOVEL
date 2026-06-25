@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Inquilino } from './inquilino.entity';
 import { Documento } from './documento.entity';
 
@@ -22,8 +22,12 @@ export class Inmueble {
   @Column()
   status: string;
 
-  @OneToMany(() => Inquilino, (inquilino) => inquilino.property)
-  tenants: Inquilino[];
+  @Column({ nullable: true })
+  tenantId: string | null;
+
+  @ManyToOne(() => Inquilino, (inquilino) => inquilino.properties, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'tenantId' })
+  tenant: Inquilino;
 
   @OneToMany(() => Documento, (documento) => documento.property)
   documents: Documento[];

@@ -28,12 +28,8 @@ export class Inquilino {
   @Column({ type: 'date', nullable: true })
   contractEnd: Date;
 
-  @Column({ nullable: true })
-  propertyId: string;
-
-  @ManyToOne(() => Inmueble, (inmueble) => inmueble.tenants, { nullable: true, onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'propertyId' })
-  property: Inmueble;
+  @OneToMany(() => Inmueble, (inmueble) => inmueble.tenant)
+  properties: Inmueble[];
 
   @OneToMany(() => Documento, (documento) => documento.tenant)
   documents: Documento[];
