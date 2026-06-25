@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { PropertiesService } from './properties.service';
 
 @Controller('api/properties')
@@ -6,8 +6,11 @@ export class PropertiesController {
   constructor(private readonly propertiesService: PropertiesService) {}
 
   @Get()
-  findAll() {
-    return this.propertiesService.findAll();
+  findAll(
+    @Query('search') search?: string,
+    @Query('status') status?: string,
+  ) {
+    return this.propertiesService.findAll(search, status);
   }
 
   @Get(':id')

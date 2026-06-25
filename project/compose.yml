@@ -5,18 +5,18 @@ services:
     image: postgres:16-alpine
     container_name: inmovel-db
     environment:
-      POSTGRES_DB: sici
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      TZ: America/Sao_Paulo
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${POSTGRES_TZ}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - "5431:5432"
+      - "${POSTGRES_PORT}:5432"
     networks:
       - inmovel-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d sici"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -29,10 +29,10 @@ services:
     volumes:
       - uploads-data:/app/uploads
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/sici?schema=public
-      JWT_SECRET: supersecretinmobrandkey123!
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      JWT_SECRET: ${JWT_SECRET}
       PORT: 3000
-      TZ: America/Sao_Paulo
+      TZ: ${POSTGRES_TZ}
       NODE_ENV: production
     depends_on:
       db:
@@ -64,3 +64,4 @@ volumes:
 networks:
   inmovel-net:
     name: inmovel-net
+

@@ -7,26 +7,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        inmo: {
-          brand: '#0A2540',      // Azul Ultra Profundo (Sidebar, Textos Principales)
-          primary: '#1E3A8A',    // Azul Real Corporativo (Botones principales, Enlaces)
-          light: '#F4F6F9',      // Fondo de la aplicación (Limpio)
+        sici: {
+          primary:    '#0f172a',
+          secondary:  '#505f76',
+          accent:     '#3b82f6',
+          background: '#f7f9fb',
+          surface:    '#ffffff',
+          border:     '#e2e8f0',
+          success:    '#10b981',
+          warning:    '#f59e0b',
+          error:      '#ef4444',
         },
-        goiania: {
-          green: '#0F5132',      // Verde Esmeralda Oscuro (KPIs positivos, Tasas de ocupación)
-          accent: '#198754',     // Verde Activo (Éxito, badges activos)
-          ipe: '#FFC107',        // Oro Ipê (Alertas críticas, contratos a 60 días de vencer)
-          ipeHover: '#E0A800',
-        },
-        neutral: {
-          dark: '#212529',       // Texto principal (Alta legibilidad)
-          muted: '#6C757D',      // Subtítulos y etiquetas secundarias
-          border: '#DEE2E6',     // Líneas de tablas y divisiones limpias
-        }
       },
       fontFamily: {
-        sans: ['Inter', 'Plus Jakarta Sans', 'ui-sans-serif', 'system-ui'],
-      }
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      borderRadius: {
+        sm:      '0.125rem',
+        DEFAULT: '0.25rem',
+        md:      '0.375rem',
+        lg:      '0.5rem',
+        xl:      '0.75rem',
+      },
     },
   },
   plugins: [],

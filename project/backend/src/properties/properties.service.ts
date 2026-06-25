@@ -10,8 +10,24 @@ export class PropertiesService {
     private inmuebleRepo: Repository<Inmueble>,
   ) {}
 
-  async findAll() {
-    return this.inmuebleRepo.find({ relations: ['tenants', 'documents'] });
+  async findAll(search?: string, status?: string) {
+    const queryBuilder = this.inmuebleRepo
+      .createQueryBuilder('property')
+      .leftJoinAndSelect('property.tenants', 'tenants')
+      .leftJoinAndSelect('property.documents', 'documents');
+
+    if (search) {
+      queryBuilder.andWhere(
+        '(property.name ILIKE :search OR property.address ILIKE :search)',
+        { search: `%${search}%` },
+      );
+    }
+
+    if (status) {
+      queryBuilder.andWhere('property.status = :status', { status });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async findOne(id: string) {

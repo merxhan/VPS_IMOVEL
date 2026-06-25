@@ -34,7 +34,6 @@
 * **Validaciones en Backend:** Control y validación obligatoria en el origen de datos fiscales regionales garantizando unicidad. Sanitización estricta de datos sensibles en los logs (cumplimiento LGPD).
 * **Manejo de Estados Financieros y Fechas:** Almacenamiento exacto de valores monetarios mediante tipos de datos `DECIMAL(10,2)` bajo el formato de Real Brasileño (R$). Registro estructurado de fechas bajo huso horario de Brasilia (UTC-3).
 * **Cumplimiento de Interfaz y Estilo:** Es mandatorio heredar, respetar y aplicar de forma estricta los tokens visuales, componentes atómicos y paletas semánticas configuradas en la guía de diseño del proyecto. Queda prohibido generar estilos arbitrarios fuera del estándar establecido.
-* **Internacionalización (i18n):** Uso obligatorio de **Vue I18n** para todo el texto visible (diccionarios estructurados DRY). El idioma predeterminado de la plataforma es el Portugués (PT), soportando cambio dinámico a Español (ES) e Inglés (EN) a través del selector en la barra superior.
 * **Enrutamiento:** Gestión de navegación estricta utilizando **Vue Router (última versión)**.
 
 ## 4. Importaciones Dinámicas (Memory Port Sub-context)
@@ -44,6 +43,6 @@
 * @project/backend/src/config/data-source.ts (Configuración centralizada de TypeORM, PostgreSQL y Entidades del dominio)
 * @project/backend/src/app.module.ts (Módulo raíz de NestJS y configuración global del servidor Express)
 * @project/backend/src/common/interceptors/timezone.interceptor.ts (Interceptor global para el forzado del huso horario UTC-3)
-* @project/frontend/src/main.ts (Punto de entrada de Vue y Vite, carga de configuraciones de i18n y router)
+* @project/frontend/src/main.ts (Punto de entrada de Vue y Vite)
 * @project/frontend/tailwind.config.js (Configuración de la guía de estilos, breakpoints responsivos y tokens visuales)
 * @project/compose.yml (Orquestación unificada de contenedores locales)

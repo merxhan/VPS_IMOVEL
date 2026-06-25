@@ -1,7 +1,7 @@
 Project Overview — Sistema Integrado de Control Inmobiliario (SICI)
 
 1. Propósito del Sistema
-Plataforma administrativa para la gestión de activos inmobiliarios y contratos de arrendamiento localizada en Goiânia-GO, Brasil. Resuelve el control operativo y financiero de propiedades consolidando el estado de vacancia, validación fiscal de inquilinos, cálculo de flujo de caja y custodia documental segura.
+Plataforma administrativa 100% Portugues Brasil para la gestión de activos inmobiliarios y contratos de arrendamiento localizada en Goiânia-GO, Brasil. Resuelve el control operativo y financiero de propiedades consolidando el estado de vacancia, validación fiscal de inquilinos, cálculo de flujo de caja y custodia documental segura.
 
 
 2. Estructura Funcional y CRUDs Core
@@ -15,9 +15,7 @@ Plataforma administrativa para la gestión de activos inmobiliarios y contratos 
 * **Gestión de Inquilinos (CRUD):** Módulo de registro de arrendatarios que captura nombre, correo electrónico, teléfono y documento de identidad fiscal. Bloquea de forma reactiva el almacenamiento y alerta en la interfaz ante datos inválidos.
 
 
-* **Configuraciones:** Módulo administrativo restringido exclusivamente a dos operaciones: el control del idioma de la interfaz (conmutación instantánea entre Portugués, Español e Inglés sin recarga de página) y la gestión de usuarios con acceso a la plataforma.
-
-
+* **Configuraciones:** Gestión de usuarios con acceso a la plataforma.
 
 3. Reglas de Negocio y Operación Local
 

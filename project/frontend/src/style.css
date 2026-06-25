@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-inmo-light text-neutral-dark font-sans antialiased;
+    @apply bg-sici-background text-slate-900 font-sans antialiased;
   }
 }
 

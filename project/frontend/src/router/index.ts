@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import LandingPage from '../views/LandingPage.vue';
+import Login from '../views/Login.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'landing',
-      component: LandingPage,
+      name: 'login',
+      component: Login,
     },
     {
       path: '/login',
@@ -33,9 +33,9 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/users',
-      name: 'users',
-      component: () => import('../views/Users.vue'),
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/Settings.vue'),
       meta: { requiresAuth: true },
     },
     {
