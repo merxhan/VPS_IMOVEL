@@ -55,7 +55,7 @@ export class PropertiesService {
   }
 
   async update(id: string, data: any) {
-    await this.findOne(id); // verifica existencia
+    await this.findOne(id); 
     await this.inmuebleRepo.update(id, data);
     return this.findOne(id);
   }
@@ -66,7 +66,7 @@ export class PropertiesService {
   }
 
   async addDocument(propertyId: string, file: Express.Multer.File) {
-    await this.findOne(propertyId); // verifica existencia
+    await this.findOne(propertyId); 
     const doc = this.docRepo.create({
       name: file.originalname,
       filePath: file.filename,

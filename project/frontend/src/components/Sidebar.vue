@@ -31,7 +31,7 @@ function handleLogout() {
 </script>
 
 <template>
-  <!-- Desktop Sidebar (Left side, collapsible) -->
+  
   <aside 
     v-if="token"
     :class="[
@@ -39,7 +39,7 @@ function handleLogout() {
       isCollapsed ? 'w-20' : 'w-64'
     ]"
   >
-    <!-- Brand / Header -->
+    
     <div>
       <div class="p-4 border-b border-slate-700/50 flex items-center h-20" :class="isCollapsed ? 'justify-center' : 'justify-between'">
         <div class="flex items-center space-x-3 overflow-hidden" v-if="!isCollapsed">
@@ -61,7 +61,7 @@ function handleLogout() {
         </button>
       </div>
 
-      <!-- Navigation Links -->
+      
       <nav class="mt-6 px-3 space-y-2">
         <button
           @click="handleNav('dashboard')"
@@ -134,7 +134,7 @@ function handleLogout() {
       </nav>
     </div>
 
-    <!-- Footer Session Info -->
+    
     <div class="p-4 border-t border-slate-700/50 bg-slate-900/40">
       <div v-if="!isCollapsed" class="flex items-center space-x-3 mb-3">
         <div class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center font-bold text-sm text-sici-warning shrink-0">
@@ -166,7 +166,7 @@ function handleLogout() {
     </div>
   </aside>
 
-  <!-- Mobile Drawer Overlay -->
+  
   <teleport to="body">
     <transition name="fade">
       <div 
@@ -180,7 +180,7 @@ function handleLogout() {
         v-if="token && mobileOpen"
         class="md:hidden fixed inset-y-0 right-0 w-72 bg-sici-primary text-white z-50 flex flex-col justify-between shadow-2xl"
       >
-        <!-- Brand / Header -->
+        
         <div>
           <div class="p-5 border-b border-slate-700/50 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -192,7 +192,7 @@ function handleLogout() {
                 <span class="text-xs text-slate-400 block">Goiânia - GO</span>
               </div>
             </div>
-            <!-- Close button -->
+            
             <button @click="emit('close')" class="text-slate-400 hover:text-white transition p-1">
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -200,7 +200,7 @@ function handleLogout() {
             </button>
           </div>
 
-          <!-- Navigation Links -->
+          
           <nav class="mt-4 px-4 space-y-1">
             <button
               @click="handleNav('dashboard')"
@@ -265,7 +265,7 @@ function handleLogout() {
           </nav>
         </div>
 
-        <!-- Footer Session Info -->
+        
         <div class="p-4 border-t border-slate-700/50 bg-slate-900/40">
           <div class="flex items-center space-x-3 mb-3">
             <div class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center font-bold text-sm text-sici-warning shrink-0">

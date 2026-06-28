@@ -10,7 +10,7 @@ import { Usuario } from '../entities/usuario.entity';
     TypeOrmModule.forFeature([Usuario]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'supersecretinmobrandkey123!',
-      signOptions: { expiresIn: '1d' },
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   controllers: [AuthController],

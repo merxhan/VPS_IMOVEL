@@ -21,14 +21,14 @@ const usersSuccess = ref('');
 
 const backendUrl = import.meta.env.VITE_API_URL || '/api';
 
-// Modal and Form States
+
 const showUserModal = ref(false);
 const editingUser = ref<UserItem | null>(null);
 const userForm = ref({ name: '', phone: '', password: '', role: 'ADMIN' });
 const userFormError = ref('');
 const userFormLoading = ref(false);
 
-// Delete Confirmation Modal States
+
 const showDeleteConfirm = ref(false);
 const deletingUser = ref<UserItem | null>(null);
 const deleteLoading = ref(false);
@@ -164,7 +164,7 @@ async function handleDelete() {
   }
 }
 
-// Get user initials for avatar
+
 function getInitials(name: string): string {
   if (!name) return 'US';
   const parts = name.trim().split(/\s+/);
@@ -179,7 +179,7 @@ onMounted(() => {
 
 <template>
   <div class="p-4 sm:p-6 md:p-8 max-w-6xl mx-auto space-y-8 relative">
-    <!-- Header Section -->
+    
     <div class="border-b border-slate-100 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <h2 class="text-3xl font-bold tracking-tight text-slate-900 font-sans">
@@ -189,7 +189,7 @@ onMounted(() => {
           Administre as preferências globais e o acesso de usuários do sistema.
         </p>
       </div>
-      <!-- Info Box for Timezone -->
+      
       <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-500 max-w-sm shrink-0">
         <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -200,12 +200,12 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Bento Grid Layout -->
+    
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- User Management (Bento Card - Width: 3 Columns) -->
+      
       <div class="lg:col-span-3 bg-white border border-slate-200 rounded-xl flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-md transition">
         <div>
-          <!-- Header of User Card -->
+          
           <div class="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200">
             <div class="flex items-center gap-3">
               <div class="p-2 bg-slate-100 rounded-lg text-slate-700">
@@ -229,7 +229,7 @@ onMounted(() => {
             </button>
           </div>
 
-          <!-- Operation Success/Error Banner -->
+          
           <div v-if="usersSuccess" class="m-6 p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-lg flex items-center gap-2 font-sans">
             <svg class="w-4.5 h-4.5 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
@@ -244,12 +244,12 @@ onMounted(() => {
             <span>{{ usersError }}</span>
           </div>
 
-          <!-- Loading Spinner -->
+          
           <div v-if="usersLoading" class="py-12 flex justify-center items-center">
             <div class="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
           </div>
 
-          <!-- Users Table List -->
+          
           <div v-else class="overflow-x-auto">
             <table class="w-full text-left border-collapse min-w-[500px]">
               <thead class="bg-slate-50 border-b border-slate-200">
@@ -315,7 +315,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Table Footer Pagination -->
+        
         <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
           <p class="text-xs font-semibold text-slate-500 font-sans">
             Mostrando {{ users.length }} de {{ users.length }} usuários registrados
@@ -336,20 +336,20 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Footer Copyright -->
+    
     <footer class="p-6 border-t border-slate-200 text-center font-sans">
       <p class="text-xs text-slate-400 font-medium tracking-wide">
         SICI © 2026 - Sistema Integrado de Controle Imobiliário. Todos os direitos reservados.
       </p>
     </footer>
 
-    <!-- User Edit / Create Modal -->
+    
     <div 
       v-if="showUserModal"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
     >
       <div class="relative bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col">
-        <!-- Modal Header -->
+        
         <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
           <h3 class="text-base font-bold text-slate-900 font-sans">
             {{ editingUser ? 'Editar Usuário' : 'Novo Usuário' }}
@@ -357,9 +357,9 @@ onMounted(() => {
           <button @click="showUserModal = false" class="text-slate-400 hover:text-red-500 font-bold p-1 rounded hover:bg-slate-100 transition">✕</button>
         </div>
 
-        <!-- Modal Form -->
+        
         <form @submit.prevent="handleUserSave" class="p-6 space-y-4 flex-1">
-          <!-- Modal Error Banner -->
+          
           <div v-if="userFormError" class="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-lg flex items-center gap-2 font-sans">
             <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -367,7 +367,7 @@ onMounted(() => {
             <span>{{ userFormError }}</span>
           </div>
 
-          <!-- Name Input -->
+          
           <div class="space-y-1.5">
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">
               Nome de Usuário *
@@ -380,7 +380,7 @@ onMounted(() => {
             />
           </div>
 
-          <!-- Phone/Cellular Input -->
+          
           <div class="space-y-1.5">
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">
               Telefone Celular *
@@ -394,7 +394,7 @@ onMounted(() => {
             />
           </div>
 
-          <!-- Password Input -->
+          
           <div class="space-y-1.5">
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">
               Senha
@@ -410,7 +410,7 @@ onMounted(() => {
             />
           </div>
 
-          <!-- Role Select -->
+          
           <div class="space-y-1.5">
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">
               Função de Acesso *
@@ -423,7 +423,7 @@ onMounted(() => {
             </select>
           </div>
 
-          <!-- Modal Action Buttons -->
+          
           <div class="flex gap-3 pt-4 border-t border-slate-100">
             <button
               type="button"
@@ -445,7 +445,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- User Delete Confirmation Modal -->
+    
     <div 
       v-if="showDeleteConfirm"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"

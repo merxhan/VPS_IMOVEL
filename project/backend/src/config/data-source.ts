@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL || 
     `postgresql://${process.env.POSTGRES_USER || 'postgres'}:${process.env.POSTGRES_PASSWORD || 'postgres'}@${process.env.POSTGRES_HOST || 'localhost'}:${process.env.POSTGRES_PORT || '5432'}/${process.env.POSTGRES_DB || 'sici'}?schema=public`,
-  synchronize: false, // In production, use migrations
+  synchronize: false, 
   logging: process.env.NODE_ENV !== 'production',
   entities: [Usuario, Inmueble, Inquilino, Documento],
   migrations: [__dirname + '/../migrations/*.ts'],

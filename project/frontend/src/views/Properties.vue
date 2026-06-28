@@ -38,7 +38,7 @@ const isLoading = ref(true);
 
 const backendUrl = import.meta.env.VITE_API_URL || '/api';
 
-// Modal and Form States
+
 const showFormModal = ref(false);
 const isEditing = ref(false);
 const editingId = ref<string | null>(null);
@@ -50,16 +50,16 @@ const formStatus = ref('DISPONIBLE');
 const formCep = ref('');
 const formError = ref('');
 
-// Modal Active Tab
+
 const activeModalTab = ref<'general' | 'contract' | 'docs'>('general');
 
-// Modal File State
+
 const modalFileInput = ref<HTMLInputElement | null>(null);
 const docError = ref('');
 const docUploading = ref(false);
 const editingProperty = computed(() => properties.value.find(p => p.id === editingId.value));
 
-// Custom Delete Modals and Alert States
+
 const showDeleteConfirm = ref(false);
 const propertyToDelete = ref<Property | null>(null);
 const deleteLoading = ref(false);
@@ -67,7 +67,7 @@ const deleteLoading = ref(false);
 const showRentalWarning = ref(false);
 const warningMessage = ref('');
 
-// Stats
+
 const totalPropertiesCount = computed(() => properties.value.length);
 const rentedPropertiesCount = computed(() => properties.value.filter(p => p.status === 'ALQUILADO').length);
 const occupancyRate = computed(() => {
@@ -87,7 +87,7 @@ const nearExpirationsCount = computed(() => {
   }).length;
 });
 
-// Format currency helper
+
 function formatBRL(value: number) {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -95,7 +95,7 @@ function formatBRL(value: number) {
   }).format(value);
 }
 
-// Fetch properties
+
 async function fetchProperties() {
   isLoading.value = true;
   try {
@@ -125,7 +125,7 @@ onMounted(() => {
   }
 });
 
-// Create or Update
+
 async function handleSubmit() {
   if (!formName.value || !formAddress.value || formRentValue.value <= 0 || !formCep.value) {
     formError.value = 'Todos os campos (incluindo CEP) são obrigatórios e o aluguel deve ser maior que 0.';
@@ -178,7 +178,7 @@ async function handleSubmit() {
   }
 }
 
-// Edit Action
+
 function editProperty(prop: Property) {
   isEditing.value = true;
   editingId.value = prop.id;
@@ -192,7 +192,7 @@ function editProperty(prop: Property) {
   showFormModal.value = true;
 }
 
-// Delete Action
+
 function openDeleteConfirm(prop: Property) {
   propertyToDelete.value = prop;
   showDeleteConfirm.value = true;
@@ -228,7 +228,7 @@ async function handleDelete() {
   }
 }
 
-// Handle PDF Document Upload
+
 async function handleDocUpload() {
   const file = modalFileInput.value?.files?.[0];
   const targetId = editingId.value;
@@ -305,7 +305,7 @@ function triggerFileInput() {
 
 <template>
   <div class="p-4 sm:p-6 md:p-8 max-w-[1440px] mx-auto space-y-8 relative">
-    <!-- Page Header -->
+    
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-6">
       <div>
         <h1 class="text-3xl font-bold tracking-tight text-slate-900 font-sans">
@@ -323,9 +323,9 @@ function triggerFileInput() {
       </button>
     </div>
 
-    <!-- Bento Stats / Quick Filters -->
+    
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- Total Imóveis -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">TOTAL DE IMÓVEIS</span>
@@ -334,7 +334,7 @@ function triggerFileInput() {
         <p class="text-slate-500 text-xs mt-4 font-medium font-sans">Imóveis cadastrados</p>
       </div>
 
-      <!-- Alugados -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">IMÓVEIS ALUGADOS</span>
@@ -350,7 +350,7 @@ function triggerFileInput() {
         </div>
       </div>
 
-      <!-- Vencimentos (60 dias) -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">PRÓXIMOS VENCIMENTOS</span>
@@ -359,7 +359,7 @@ function triggerFileInput() {
         <p class="text-slate-500 text-xs mt-4 font-medium font-sans">Contratos vencendo nos próximos 60 dias</p>
       </div>
 
-      <!-- Aluguel Mensal Total -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">FATURAMENTO MENSAL</span>
@@ -371,9 +371,9 @@ function triggerFileInput() {
       </div>
     </div>
 
-    <!-- Data Table Section -->
+    
     <div class="bg-white border border-slate-200 rounded-[8px] shadow-sm overflow-hidden">
-      <!-- Filter Bar -->
+      
       <div class="p-4 border-b border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50">
         <div class="flex gap-2">
           <button 
@@ -416,18 +416,18 @@ function triggerFileInput() {
         </div>
       </div>
 
-      <!-- Loading State -->
+      
       <div v-if="isLoading" class="py-20 flex flex-col items-center justify-center space-y-4">
         <div class="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
         <span class="text-sm font-semibold text-slate-500 font-sans">Buscando imóveis...</span>
       </div>
 
-      <!-- Empty State -->
+      
       <div v-else-if="properties.length === 0" class="py-16 text-center text-slate-500 border-t border-slate-200 font-sans italic">
         Nenhum imóvel registrado.
       </div>
 
-      <!-- Table -->
+      
       <div v-else class="overflow-x-auto w-full">
         <table class="w-full text-left border-collapse whitespace-nowrap">
           <thead class="bg-slate-50 border-b border-slate-200">
@@ -504,7 +504,7 @@ function triggerFileInput() {
         </table>
       </div>
       
-      <!-- Table Footer / Pagination simulation -->
+      
       <div class="p-4 border-t border-slate-200 flex items-center justify-between bg-slate-50">
         <p class="text-xs font-semibold text-slate-500 font-sans">
           Mostrando 1-{{ totalPropertiesCount }} de {{ totalPropertiesCount }} imóveis
@@ -530,14 +530,14 @@ function triggerFileInput() {
       </div>
     </div>
 
-    <!-- Double Column Modal: Add/Edit Property -->
+    
     <div 
       v-if="showFormModal"
       class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4"
       @click.self="showFormModal = false"
     >
       <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col transform transition-all duration-300">
-        <!-- Modal Header -->
+        
         <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
           <div>
             <h3 class="text-[20px] font-bold leading-[28px] text-slate-900 font-sans">
@@ -550,7 +550,7 @@ function triggerFileInput() {
           <button @click="showFormModal = false" class="text-slate-400 hover:text-red-500 font-bold p-1 rounded hover:bg-slate-100 transition">✕</button>
         </div>
 
-        <!-- Modal Body (Two columns) -->
+        
         <div class="flex-grow overflow-y-auto p-6">
           <div v-if="formError" class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg flex items-center gap-2">
             <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -560,7 +560,7 @@ function triggerFileInput() {
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Left Navigation Tabs -->
+            
             <div class="space-y-4">
               <nav class="flex flex-col gap-1">
                 <button 
@@ -593,7 +593,7 @@ function triggerFileInput() {
                 </button>
               </nav>
 
-              <!-- Progress box -->
+              
               <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
                 <h5 class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-2 font-sans">Resumo da Ficha</h5>
                 <ul class="space-y-2 text-[11px] font-sans">
@@ -610,9 +610,9 @@ function triggerFileInput() {
               </div>
             </div>
 
-            <!-- Right Column fields -->
+            
             <form @submit.prevent="handleSubmit" class="md:col-span-2 space-y-6">
-              <!-- General Info tab -->
+              
               <div v-if="activeModalTab === 'general'" class="space-y-4">
                 <h4 class="font-bold text-slate-900 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide font-sans">
                   Dados Gerais do Imóvel
@@ -648,7 +648,7 @@ function triggerFileInput() {
                 </div>
               </div>
 
-              <!-- Contract & Rent tab -->
+              
               <div v-else-if="activeModalTab === 'contract'" class="space-y-4">
                 <h4 class="font-bold text-slate-900 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide font-sans">
                   Dados Financeiros & Contrato
@@ -680,13 +680,13 @@ function triggerFileInput() {
                 </div>
               </div>
 
-              <!-- Documents tab (Available only when editing) -->
+              
               <div v-else-if="activeModalTab === 'docs' && isEditing" class="space-y-4">
                 <h4 class="font-bold text-slate-900 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide font-sans">
                   Documentação do Imóvel (PDF)
                 </h4>
                 
-                <!-- Drag and drop simulated file upload zone -->
+                
                 <div 
                   @click="triggerFileInput()"
                   class="border-2 border-dashed border-slate-200 rounded-xl p-8 text-center bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer group"
@@ -711,7 +711,7 @@ function triggerFileInput() {
                   <span>Enviando arquivo...</span>
                 </div>
 
-                <!-- Attached documents list -->
+                
                 <div class="space-y-2">
                   <h5 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-sans">Arquivos Anexados</h5>
                   <div v-if="!editingProperty?.documents.length" class="text-xs text-slate-500 italic py-2 font-sans">
@@ -736,7 +736,7 @@ function triggerFileInput() {
                 </div>
               </div>
 
-              <!-- Action buttons inside form -->
+              
               <div class="flex justify-end gap-3 border-t border-slate-100 pt-6">
                 <button 
                   type="button" 
@@ -760,7 +760,7 @@ function triggerFileInput() {
 
 
 
-    <!-- Custom Delete Confirmation Modal -->
+    
     <div 
       v-if="showDeleteConfirm"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
@@ -793,7 +793,7 @@ function triggerFileInput() {
       </div>
     </div>
 
-    <!-- Custom Rental Warning Alert Modal -->
+    
     <div 
       v-if="showRentalWarning"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"

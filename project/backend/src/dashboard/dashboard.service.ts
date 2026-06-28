@@ -38,7 +38,7 @@ export class DashboardService {
       0,
     );
 
-    // Get today's date in America/Sao_Paulo (UTC-3)
+    
     const now = new Date();
     const utc3String = now.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });
     const today = new Date(utc3String);

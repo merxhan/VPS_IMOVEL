@@ -1,21 +1,71 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed, onUnmounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-// Import components
 import Sidebar from './components/Sidebar.vue';
 import ToastContainer from './components/ToastContainer.vue';
 
 const route = useRoute();
+const router = useRouter();
 const mobileMenuOpen = ref(false);
 
 const token = computed(() => localStorage.getItem('inmovel_token'));
 const hideHeader = computed(() => route.name === 'login');
+
+let inactivityTimeout: number | undefined;
+const TIMEOUT_1_HOUR = 3600000;
+
+function logout() {
+  localStorage.removeItem('inmovel_token');
+  localStorage.removeItem('inmovel_user');
+  localStorage.removeItem('inmovel_session_expires');
+  router.push({ name: 'login' });
+}
+
+function resetInactivityTimer() {
+  if (inactivityTimeout) {
+    clearTimeout(inactivityTimeout);
+  }
+  if (token.value) {
+    localStorage.setItem('inmovel_session_expires', (Date.now() + TIMEOUT_1_HOUR).toString());
+    inactivityTimeout = window.setTimeout(() => {
+      logout();
+    }, TIMEOUT_1_HOUR);
+  }
+}
+
+const activityEvents = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+
+function setupActivityListeners() {
+  activityEvents.forEach(event => {
+    window.addEventListener(event, resetInactivityTimer);
+  });
+}
+
+function removeActivityListeners() {
+  activityEvents.forEach(event => {
+    window.removeEventListener(event, resetInactivityTimer);
+  });
+}
+
+watch(token, (newToken) => {
+  if (newToken) {
+    resetInactivityTimer();
+    setupActivityListeners();
+  } else {
+    if (inactivityTimeout) clearTimeout(inactivityTimeout);
+    removeActivityListeners();
+  }
+}, { immediate: true });
+
+onUnmounted(() => {
+  if (inactivityTimeout) clearTimeout(inactivityTimeout);
+  removeActivityListeners();
+});
 </script>
 
 <template>
   <div class="min-h-screen flex flex-col md:flex-row bg-sici-background font-sans antialiased text-slate-900">
-    <!-- Mobile Header (only when authenticated) -->
     <header 
       v-if="token && !hideHeader"
       class="md:hidden bg-sici-primary text-white px-4 py-3 flex items-center justify-between shadow-md sticky top-0 z-30"
@@ -38,12 +88,9 @@ const hideHeader = computed(() => route.name === 'login');
       </div>
     </header>
 
-    <!-- Navigation Sidebar (Only displays if authenticated) -->
     <Sidebar :mobile-open="mobileMenuOpen" @close="mobileMenuOpen = false" />
 
-    <!-- Main Content Container -->
     <div class="flex-grow flex flex-col min-h-0 overflow-y-auto bg-slate-50">
-      <!-- Authenticated Top Bar (Desktop) -->
       <header 
         v-if="token && !hideHeader"
         class="hidden md:flex items-center justify-end px-8 py-4 bg-white border-b border-sici-border shadow-sm sticky top-0 z-20"
@@ -55,7 +102,6 @@ const hideHeader = computed(() => route.name === 'login');
       </main>
     </div>
     
-    <!-- Global Toast Notifications -->
     <ToastContainer />
   </div>
 </template>

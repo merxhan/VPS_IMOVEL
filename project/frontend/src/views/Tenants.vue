@@ -41,7 +41,7 @@ const isLoading = ref(true);
 
 const backendUrl = import.meta.env.VITE_API_URL || '/api';
 
-// Modal and Form States
+
 const showFormModal = ref(false);
 const isEditing = ref(false);
 const editingId = ref<string | null>(null);
@@ -58,25 +58,25 @@ const formError = ref('');
 const docFieldError = ref('');
 const phoneFieldError = ref('');
 
-// Modal Active Tab and Files
+
 const activeModalTab = ref<'general' | 'contract' | 'docs'>('general');
 const modalFileInput = ref<HTMLInputElement | null>(null);
 const docError = ref('');
 const docUploading = ref(false);
 const editingTenant = computed(() => tenants.value.find(t => t.id === editingId.value));
 
-// Custom Delete Modals and Alert States
+
 const showDeleteConfirm = ref(false);
 const tenantToDelete = ref<Tenant | null>(null);
 const deleteLoading = ref(false);
 
-// Format date helper
+
 function formatDate(dateStr: string | null) {
   if (!dateStr) return '-';
   return new Date(dateStr).toLocaleDateString('pt-BR');
 }
 
-// Format document helper
+
 function formatDocument(type: string, value: string) {
   const clean = value.replace(/\D/g, '');
   if (type === 'CPF' && clean.length === 11) {
@@ -87,7 +87,7 @@ function formatDocument(type: string, value: string) {
   return value;
 }
 
-// Check if contract is expiring within 60 days
+
 function getDaysRemaining(dateStr: string | null): number | null {
   if (!dateStr) return null;
   const end = new Date(dateStr);
@@ -101,7 +101,7 @@ function isExpiringSoon(dateStr: string | null): boolean {
   return days !== null && days >= 0 && days <= 60;
 }
 
-// Get tenant initials for avatar
+
 function getInitials(name: string): string {
   if (!name) return '';
   const parts = name.trim().split(/\s+/);
@@ -109,7 +109,7 @@ function getInitials(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-// Validation on Input
+
 function validateFiscalOnInput() {
   if (!formDocValue.value) {
     docFieldError.value = '';
@@ -124,7 +124,7 @@ function validateFiscalOnInput() {
   }
 }
 
-// Handle format and validation on writing document
+
 function handleDocInput(e: Event) {
   const target = e.target as HTMLInputElement;
   let val = target.value.replace(/\D/g, '');
@@ -141,7 +141,7 @@ function handleDocInput(e: Event) {
   validateFiscalOnInput();
 }
 
-// Format phone helper for Brazilian numbers
+
 function formatPhoneValue(value: string): string {
   let val = value.replace(/\D/g, '');
   if (val.length > 11) {
@@ -160,7 +160,7 @@ function formatPhoneValue(value: string): string {
   }
 }
 
-// Validation on Input for Phone
+
 function validatePhoneOnInput() {
   if (!formPhone.value) {
     phoneFieldError.value = '';
@@ -174,14 +174,14 @@ function validatePhoneOnInput() {
   }
 }
 
-// Handle format and validation on writing phone
+
 function handlePhoneInput(e: Event) {
   const target = e.target as HTMLInputElement;
   formPhone.value = formatPhoneValue(target.value);
   validatePhoneOnInput();
 }
 
-// Fetch tenants
+
 async function fetchTenants() {
   isLoading.value = true;
   try {
@@ -204,7 +204,7 @@ async function fetchTenants() {
   }
 }
 
-// Fetch properties for assignment
+
 async function fetchProperties() {
   try {
     const res = await fetch(`${backendUrl}/properties`, {
@@ -227,14 +227,14 @@ onMounted(() => {
   }
 });
 
-// Create or Update
+
 async function handleSubmit() {
   if (!formName.value || !formEmail.value || !formPhone.value || !formDocType.value || !formDocValue.value) {
     formError.value = 'Por favor, preencha todos os campos obrigatórios.';
     return;
   }
 
-  // Validate Phone client-side
+  
   const cleanPhone = formPhone.value.replace(/\D/g, '');
   if (cleanPhone.length !== 10 && cleanPhone.length !== 11) {
     phoneFieldError.value = 'O telefone deve ter 10 ou 11 dígitos.';
@@ -242,7 +242,7 @@ async function handleSubmit() {
     return;
   }
 
-  // Validate CPF/CNPJ client-side
+  
   const cleanDoc = formDocValue.value.replace(/\D/g, '');
   const isValid = formDocType.value === 'CPF' ? isValidCPF(cleanDoc) : isValidCNPJ(cleanDoc);
   if (!isValid) {
@@ -296,7 +296,7 @@ async function handleSubmit() {
   }
 }
 
-// Edit Action
+
 function editTenant(tenant: Tenant) {
   isEditing.value = true;
   editingId.value = tenant.id;
@@ -314,7 +314,7 @@ function editTenant(tenant: Tenant) {
   showFormModal.value = true;
 }
 
-// Delete Action
+
 function openDeleteConfirm(tenant: Tenant) {
   tenantToDelete.value = tenant;
   showDeleteConfirm.value = true;
@@ -350,7 +350,7 @@ async function handleDelete() {
   }
 }
 
-// Handle PDF Document Upload
+
 async function handleDocUpload() {
   const file = modalFileInput.value?.files?.[0];
   const targetId = editingId.value;
@@ -429,7 +429,7 @@ function resetForm() {
   activeModalTab.value = 'general';
 }
 
-// Computed Bento Metrics
+
 const totalTenants = computed(() => tenants.value.length);
 const activeContracts = computed(() => tenants.value.filter(t => t.properties && t.properties.length > 0).length);
 const upcomingExpirations = computed(() => tenants.value.filter(t => t.contractEnd && isExpiringSoon(t.contractEnd)).length);
@@ -443,7 +443,7 @@ const fiscalAlerts = computed(() => {
 
 <template>
   <div class="p-4 sm:p-6 md:p-8 max-w-[1440px] mx-auto space-y-8 relative">
-    <!-- Page Header -->
+    
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-6">
       <div>
         <h1 class="text-3xl font-bold tracking-tight text-slate-900 font-sans">
@@ -457,7 +457,7 @@ const fiscalAlerts = computed(() => {
         @click="resetForm(); showFormModal = true"
         class="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded text-sm font-semibold hover:bg-slate-800 active:scale-95 transition-all shadow-sm font-sans"
       >
-        <!-- Material Symbol Outlined: person_add -->
+        
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
         </svg>
@@ -465,9 +465,9 @@ const fiscalAlerts = computed(() => {
       </button>
     </div>
 
-    <!-- Bento Grid Summary -->
+    
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- Card 1: Total Tenants -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">TOTAL DE INQUILINOS</span>
@@ -481,7 +481,7 @@ const fiscalAlerts = computed(() => {
         </p>
       </div>
 
-      <!-- Card 2: Active Contracts -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">CONTRATOS ATIVOS</span>
@@ -492,7 +492,7 @@ const fiscalAlerts = computed(() => {
         </p>
       </div>
 
-      <!-- Card 3: Upcoming Expirations -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">PRÓXIMOS VENCIMENTOS</span>
@@ -501,7 +501,7 @@ const fiscalAlerts = computed(() => {
         <p class="text-slate-500 text-xs mt-4 font-medium font-sans">Próximos 60 dias</p>
       </div>
 
-      <!-- Card 4: Fiscal Alerts -->
+      
       <div class="bg-white p-6 border border-slate-200 rounded-[8px] shadow-sm flex flex-col justify-between hover:shadow-md transition">
         <div>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block font-sans">ALERTA FISCAL</span>
@@ -511,7 +511,7 @@ const fiscalAlerts = computed(() => {
       </div>
     </div>
 
-    <!-- Filters and Table Controls -->
+    
     <div class="bg-white border border-slate-200 p-4 rounded-[8px] shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
       <div class="relative w-full max-w-md">
         <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -532,18 +532,18 @@ const fiscalAlerts = computed(() => {
       </div>
     </div>
 
-    <!-- Loading State -->
+    
     <div v-if="isLoading" class="py-20 flex flex-col items-center justify-center space-y-4">
       <div class="w-10 h-10 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
       <span class="text-sm text-slate-500 font-sans">Buscando inquilinos...</span>
     </div>
 
-    <!-- Empty State -->
+    
     <div v-else-if="tenants.length === 0" class="py-16 text-center text-slate-500 border border-dashed border-slate-200 rounded-[8px] bg-white font-sans">
       Nenhum inquilino registrado.
     </div>
 
-    <!-- Tenants Data Table -->
+    
     <div v-else class="overflow-x-auto bg-white border border-slate-200 rounded-[8px] shadow-sm">
       <table class="w-full text-left border-collapse">
         <thead class="bg-slate-50 border-b border-slate-200">
@@ -645,7 +645,7 @@ const fiscalAlerts = computed(() => {
         </tbody>
       </table>
 
-      <!-- Table Pagination Footer -->
+      
       <div class="p-4 border-t border-slate-200 flex items-center justify-between bg-slate-50">
         <p class="text-xs font-semibold text-slate-500 font-sans">
           Mostrando 1-{{ tenants.length }} de {{ totalTenants }} inquilinos
@@ -671,14 +671,14 @@ const fiscalAlerts = computed(() => {
       </div>
     </div>
 
-    <!-- Double Column Modal: Add/Edit Tenant -->
+    
     <div 
       v-if="showFormModal"
       class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4"
       @click.self="showFormModal = false"
     >
       <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col transform transition-all duration-300">
-        <!-- Modal Header -->
+        
         <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
           <div>
             <h3 class="text-[20px] font-bold leading-[28px] text-slate-900 font-sans">
@@ -691,7 +691,7 @@ const fiscalAlerts = computed(() => {
           <button @click="showFormModal = false" class="text-slate-400 hover:text-red-500 font-bold p-1 rounded hover:bg-slate-100 transition">✕</button>
         </div>
 
-        <!-- Modal Body (Two columns) -->
+        
         <div class="flex-grow overflow-y-auto p-6">
           <div v-if="formError" class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg flex items-center gap-2">
             <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -701,7 +701,7 @@ const fiscalAlerts = computed(() => {
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Left Navigation Tabs -->
+            
             <div class="space-y-4">
               <nav class="flex flex-col gap-1">
                 <button 
@@ -734,7 +734,7 @@ const fiscalAlerts = computed(() => {
                 </button>
               </nav>
 
-              <!-- Progress box -->
+              
               <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
                 <h5 class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-2 font-sans">Resumo da Ficha</h5>
                 <ul class="space-y-2 text-[11px] font-sans">
@@ -751,15 +751,15 @@ const fiscalAlerts = computed(() => {
               </div>
             </div>
 
-            <!-- Right Column fields -->
+            
             <form @submit.prevent="handleSubmit" class="md:col-span-2 space-y-6">
-              <!-- General Info tab -->
+              
               <div v-if="activeModalTab === 'general'" class="space-y-4">
                 <h4 class="font-bold text-slate-900 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide font-sans">
                   Dados Gerais do Inquilino
                 </h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <!-- Name Field -->
+                  
                   <div class="sm:col-span-2 space-y-1.5">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">Nome Completo / Razão Social *</label>
                     <input 
@@ -770,7 +770,7 @@ const fiscalAlerts = computed(() => {
                     />
                   </div>
 
-                  <!-- Email Field -->
+                  
                   <div class="sm:col-span-2 space-y-1.5">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">E-mail Principal *</label>
                     <input 
@@ -782,7 +782,7 @@ const fiscalAlerts = computed(() => {
                     />
                   </div>
 
-                  <!-- Phone Field -->
+                  
                   <div class="space-y-1.5">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">Telefone de Contato *</label>
                     <input 
@@ -806,7 +806,7 @@ const fiscalAlerts = computed(() => {
                     </div>
                   </div>
 
-                  <!-- Document Field -->
+                  
                   <div class="space-y-1.5">
                     <div class="flex justify-between items-center">
                       <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">Documento Fiscal *</label>
@@ -846,13 +846,13 @@ const fiscalAlerts = computed(() => {
                 </div>
               </div>
 
-              <!-- Contract & Property Selection tab -->
+              
               <div v-else-if="activeModalTab === 'contract'" class="space-y-4">
                 <h4 class="font-bold text-slate-900 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide font-sans">
                   Dados de Contrato & Imóvel
                 </h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <!-- Contract Start Date -->
+                  
                   <div class="space-y-1.5">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">Início do Contrato</label>
                     <input 
@@ -862,7 +862,7 @@ const fiscalAlerts = computed(() => {
                     />
                   </div>
 
-                  <!-- Contract End Date -->
+                  
                   <div class="space-y-1.5">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">Fim do Contrato</label>
                     <input 
@@ -872,7 +872,7 @@ const fiscalAlerts = computed(() => {
                     />
                   </div>
 
-                  <!-- Property Selection -->
+                  
                   <div class="sm:col-span-2 space-y-1.5">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider font-sans">Imóveis Vinculados</label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-44 overflow-y-auto p-3 bg-slate-50 rounded-lg border border-slate-200 no-scrollbar">
@@ -900,13 +900,13 @@ const fiscalAlerts = computed(() => {
                 </div>
               </div>
 
-              <!-- Documents tab (Available only when editing) -->
+              
               <div v-else-if="activeModalTab === 'docs' && isEditing" class="space-y-4">
                 <h4 class="font-bold text-slate-900 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide font-sans">
                   Garantias e Contrato Assinado (PDF)
                 </h4>
                 
-                <!-- Drag and drop simulated file upload zone -->
+                
                 <div 
                   @click="triggerFileInput()"
                   class="border-2 border-dashed border-slate-200 rounded-xl p-8 text-center bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer group"
@@ -931,7 +931,7 @@ const fiscalAlerts = computed(() => {
                   <span>Enviando arquivo...</span>
                 </div>
 
-                <!-- Attached documents list -->
+                
                 <div class="space-y-2">
                   <h5 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-sans">Arquivos Anexados</h5>
                   <div v-if="!editingTenant?.documents.length" class="text-xs text-slate-500 italic py-2 font-sans">
@@ -956,7 +956,7 @@ const fiscalAlerts = computed(() => {
                 </div>
               </div>
 
-              <!-- Action buttons inside form -->
+              
               <div class="flex justify-end gap-3 border-t border-slate-100 pt-6">
                 <button 
                   type="button" 
@@ -978,7 +978,7 @@ const fiscalAlerts = computed(() => {
       </div>
     </div>
 
-    <!-- Custom Delete Confirmation Modal -->
+    
     <div 
       v-if="showDeleteConfirm"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"

@@ -44,7 +44,7 @@ export class TenantsService {
   async create(data: any) {
     const { propertyIds, ...tenantData } = data;
 
-    // Verificar unicidad de documentValue
+    
     const existing = await this.inquilinoRepo.findOne({ where: { documentValue: tenantData.documentValue } });
     if (existing) {
       throw new BadRequestException('El número de documento ya está registrado.');
@@ -68,9 +68,9 @@ export class TenantsService {
   async update(id: string, data: any) {
     const { propertyIds, ...tenantData } = data;
 
-    await this.findOne(id); // verifica existencia
+    await this.findOne(id); 
 
-    // Si cambia el documentValue, verificar unicidad
+    
     if (tenantData.documentValue) {
       const existing = await this.inquilinoRepo.findOne({ where: { documentValue: tenantData.documentValue } });
       if (existing && existing.id !== id) {
@@ -83,7 +83,7 @@ export class TenantsService {
     if (propertyIds && Array.isArray(propertyIds)) {
       const currentProperties = await this.inmuebleRepo.find({ where: { tenantId: id } });
 
-      // Unlink properties that are no longer selected
+      
       const toUnlink = currentProperties.filter(p => !propertyIds.includes(p.id));
       for (const prop of toUnlink) {
         await this.inmuebleRepo.update(prop.id, {
@@ -92,7 +92,7 @@ export class TenantsService {
         });
       }
 
-      // Link newly selected properties
+      
       for (const propId of propertyIds) {
         await this.inmuebleRepo.update(propId, {
           tenantId: id,
@@ -107,7 +107,7 @@ export class TenantsService {
   async remove(id: string) {
     const tenant = await this.findOne(id);
 
-    // Unlink all properties and reset status
+    
     const linkedProperties = await this.inmuebleRepo.find({ where: { tenantId: id } });
     for (const prop of linkedProperties) {
       await this.inmuebleRepo.update(prop.id, {

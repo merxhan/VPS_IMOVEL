@@ -42,6 +42,7 @@ async function handleLogin() {
     } else {
       localStorage.setItem('inmovel_token', data.token);
       localStorage.setItem('inmovel_user', JSON.stringify(data.user));
+      localStorage.setItem('inmovel_session_expires', (Date.now() + 3600000).toString());
       router.push({ name: 'dashboard' });
     }
   } catch (err) {
@@ -58,16 +59,13 @@ function togglePasswordVisibility() {
 
 <template>
   <div class="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-slate-50 font-sans">
-    <!-- Atmospheric Background Element -->
     <div class="absolute inset-0 z-0 bg-gradient-to-br from-slate-50 to-slate-100"></div>
 
-    <!-- Main Container -->
     <div class="relative z-10 w-full max-w-md px-6 flex flex-col items-center justify-center min-h-[600px] shadow-[0_8px_30px_rgb(0,0,0,0.02)] rounded-2xl overflow-hidden bg-white border border-slate-100 transition-all duration-500 py-12 m-4">
       
       <div class="w-full bg-white flex flex-col justify-center items-center">
         <div class="max-w-sm mx-auto w-full text-center">
           
-          <!-- Minimalist Branding Logo -->
           <div class="flex flex-col items-center gap-2 mb-10">
             <div class="w-12 h-12 rounded-lg bg-slate-900 text-white flex items-center justify-center mb-2 shadow-sm">
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -77,7 +75,6 @@ function togglePasswordVisibility() {
             <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight font-sans">SICI</h1>
           </div>
 
-          <!-- Title description -->
           <div class="mb-8 text-center">
             <h3 class="text-lg font-bold text-slate-900 font-sans mb-1.5">
               Bem-vindo de volta
@@ -87,7 +84,6 @@ function togglePasswordVisibility() {
             </p>
           </div>
 
-          <!-- Error Alert Banner -->
           <div 
             v-if="errorMsg"
             class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-lg flex items-start gap-2 text-left font-sans animate-in fade-in"
@@ -98,10 +94,8 @@ function togglePasswordVisibility() {
             <span>{{ errorMsg }}</span>
           </div>
 
-          <!-- Form Fields -->
           <form @submit.prevent="handleLogin" class="space-y-4 text-left">
             
-            <!-- Phone/Cellular input -->
             <div class="space-y-1">
               <label class="sr-only" for="phone">Telefone Celular</label>
               <div class="relative group">
@@ -121,7 +115,6 @@ function togglePasswordVisibility() {
               </div>
             </div>
 
-            <!-- Password input -->
             <div class="space-y-1">
               <label class="sr-only" for="password">Senha</label>
               <div class="relative group">
@@ -143,7 +136,6 @@ function togglePasswordVisibility() {
                   @click="togglePasswordVisibility"
                   class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-900 transition-colors p-1 rounded hover:bg-slate-100/50"
                 >
-                  <!-- Visibility SVG icons -->
                   <svg v-if="!showPassword" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -160,7 +152,6 @@ function togglePasswordVisibility() {
               </div>
             </div>
 
-            <!-- Primary Action Submit Button -->
             <button 
               type="submit"
               :disabled="isLoading"
@@ -177,7 +168,6 @@ function togglePasswordVisibility() {
       </div>
     </div>
 
-    <!-- Security Badges Fixed Footer -->
     <div class="fixed bottom-6 w-full flex justify-center gap-8 opacity-45 grayscale hover:grayscale-0 transition-all duration-300 z-20 font-sans">
       <div class="flex items-center gap-1.5 text-[9px] font-bold text-slate-500 uppercase tracking-wider">
         <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

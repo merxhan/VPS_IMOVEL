@@ -72,7 +72,7 @@ async function fetchDashboardData() {
   }
 }
 
-// Map variables
+
 let map: any = null;
 let markersGroup: any = null;
 const markersMap: Record<string, any> = {};
@@ -296,7 +296,7 @@ onUnmounted(() => {
 
 <template>
   <div class="px-4 py-8 lg:px-8 max-w-[1440px] mx-auto space-y-6 animate-fade-in">
-    <!-- Header -->
+    
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 pb-6 border-b border-slate-100">
       <div>
         <h1 class="text-[32px] font-bold leading-[40px] tracking-[-0.02em] text-slate-900 font-sans">
@@ -319,16 +319,16 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Loading State -->
+    
     <div v-if="isLoading" class="py-24 flex flex-col items-center justify-center space-y-4">
       <div class="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
       <span class="text-[14px] text-slate-500 font-medium font-sans">Carregando métricas...</span>
     </div>
 
     <div v-else class="space-y-6">
-      <!-- Bento Grid (Seção Superior) -->
+      
       <div class="grid grid-cols-12 gap-6">
-        <!-- KPI Tasa de Ocupación -->
+        
         <div class="col-span-12 md:col-span-4 lg:col-span-3 bg-[#0A2540] border border-slate-800 p-6 rounded-xl relative overflow-hidden group transition hover:border-[#FFC107] duration-300 shadow-md flex flex-col justify-between min-h-[190px]">
           <div>
             <div class="flex justify-between items-start mb-4">
@@ -358,7 +358,7 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- KPI Flujo de Caixa Mensual -->
+        
         <div class="col-span-12 md:col-span-4 lg:col-span-5 bg-gradient-to-br from-white to-slate-50/70 border border-slate-200 p-6 rounded-xl transition hover:border-[#0A2540] duration-300 shadow-sm flex flex-col justify-between min-h-[190px]">
           <div>
             <div class="flex justify-between items-start mb-4">
@@ -386,7 +386,7 @@ onUnmounted(() => {
           </p>
         </div>
 
-        <!-- Alertas de Expiración (Panel Crítico) -->
+        
         <div class="col-span-12 md:col-span-4 lg:col-span-4 bg-white border border-slate-200 p-6 rounded-xl flex flex-col justify-between transition hover:border-[#ef4444] duration-300 shadow-sm min-h-[190px]">
           <div>
             <div class="flex items-center justify-between mb-3.5">
@@ -438,10 +438,10 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Mapa Operativo (Seção Inferior) -->
+      
       <div class="bg-white border border-slate-200 rounded-lg overflow-hidden min-h-[600px] flex flex-col shadow-sm">
         <div class="flex-grow flex flex-col md:flex-row min-h-[500px]">
-          <!-- Lista Lateral de Imóveis (1/3 Largura) -->
+          
           <div class="w-full md:w-80 border-r border-slate-200 flex flex-col bg-slate-50/50">
             <div class="p-4 border-b border-slate-200 bg-white flex justify-between items-center">
               <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider font-sans">Selecione para localizar</h5>
@@ -491,7 +491,7 @@ onUnmounted(() => {
             </div>
           </div>
           
-          <!-- Contêiner do Leaflet Map (2/3 Largura) -->
+          
           <div class="flex-1 relative min-h-[400px] md:min-h-0 bg-slate-100 flex items-stretch">
             <div id="leaflet-map" class="w-full h-full min-h-[500px] flex-grow z-10"></div>
           </div>

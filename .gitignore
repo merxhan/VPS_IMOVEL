@@ -36,9 +36,8 @@ dist-ssr
 # Variables de Entorno y Secretos (Crítico)
 # ==========================================
 .env
-.env.local
-!.env.homologacion
-.env.produccion
+!.env.hmg
+.env.main
 *.env
 
 # ==========================================

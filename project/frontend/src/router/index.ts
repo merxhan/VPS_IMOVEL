@@ -47,9 +47,15 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const token = localStorage.getItem('inmovel_token');
-  if (to.meta.requiresAuth && !token) {
+  const expiresStr = localStorage.getItem('inmovel_session_expires');
+  const isExpired = expiresStr ? Date.now() > parseInt(expiresStr, 10) : true;
+
+  if (to.meta.requiresAuth && (!token || isExpired)) {
+    localStorage.removeItem('inmovel_token');
+    localStorage.removeItem('inmovel_user');
+    localStorage.removeItem('inmovel_session_expires');
     next({ name: 'login' });
-  } else if (to.name === 'login' && token) {
+  } else if ((to.name === 'login' || to.path === '/') && (token && !isExpired)) {
     next({ name: 'dashboard' });
   } else {
     next();
