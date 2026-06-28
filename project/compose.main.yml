@@ -20,6 +20,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   backend:
     build:
@@ -40,10 +45,13 @@ services:
         condition: service_healthy
     networks:
       - inmovel-net
-    ports:
-      - "3001:3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-  frontend:
+frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -54,10 +62,23 @@ services:
       NODE_ENV: production
     depends_on:
       - backend
-    networks:
-      - inmovel-net
     ports:
       - "8081:5173"
+    networks:
+      - inmovel-net
+      - proxy_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.inmovel-frontend.rule=Host(`${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.inmovel-frontend.entrypoints=${TRAEFIK_ENTRYPOINT}"
+      - "traefik.http.routers.inmovel-frontend.tls=true"
+      - "traefik.http.routers.inmovel-frontend.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+      - "traefik.http.services.inmovel-frontend.loadbalancer.server.port=5173"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   postgres-data:
@@ -66,3 +87,5 @@ volumes:
 networks:
   inmovel-net:
     name: inmovel-net
+  proxy_network:
+    external: true
