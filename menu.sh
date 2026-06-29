@@ -3,14 +3,11 @@
 COMPOSE_FILE="project/compose.yml"
 ENV_FILE="project/backend/.env"
 DOCKER_COMPOSE="docker compose --env-file $ENV_FILE -f $COMPOSE_FILE"
-BACKEND_DIR="project/backend"
 DATA_SOURCE="src/config/data-source.ts"
 
-run_in_backend() {
-    local current_dir=$(pwd)
-    cd "$BACKEND_DIR" || { echo "Error: No se pudo acceder a $BACKEND_DIR"; exit 1; }
-    eval "$@"
-    cd "$current_dir" || exit 1
+# Wrapper para delegar la ejecución al contenedor
+exec_in_backend() {
+    $DOCKER_COMPOSE exec backend "$@"
 }
 
 # --- SUBMENU DOCKER COMPOSE ---
@@ -54,7 +51,7 @@ docker_menu() {
                 echo "Contenedores disponibles:"
                 $DOCKER_COMPOSE ps --services
                 read -p "Ingresa el nombre del servicio al que deseas acceder: " service_name
-                $DOCKER_COMPOSE exec $service_name sh
+                $DOCKER_COMPOSE exec "$service_name" sh
                 ;;
             9) 
                 echo "--- Deteniendo y eliminando infraestructura del proyecto ---"
@@ -63,7 +60,7 @@ docker_menu() {
                 echo "--- Eliminando caché de construcción (BuildKit) ---"
                 docker builder prune -a -f
                 echo ""
-                echo "--- Executando limpieza profunda del sistema ---"
+                echo "--- Ejecutando limpieza profunda del sistema ---"
                 docker system prune -a --volumes -f
                 ;;
             0) break ;;
@@ -97,7 +94,7 @@ db_menu() {
         case $choice in
             1) 
                 echo "--- Ejecutando migraciones pendientes ---"
-                run_in_backend "npx typeorm-ts-node-commonjs migration:run -d $DATA_SOURCE"
+                exec_in_backend npx typeorm-ts-node-commonjs migration:run -d "$DATA_SOURCE"
                 ;;
             2) 
                 read -p "Ingresa el nombre descriptivo para la migración (ej. AddUserRole): " mig_name
@@ -105,20 +102,20 @@ db_menu() {
                     echo "Error: El nombre de la migración no puede estar vacío."
                 else
                     echo "--- Generando nueva migración ---"
-                    run_in_backend "npx typeorm-ts-node-commonjs migration:generate src/migrations/$mig_name -d $DATA_SOURCE"
+                    exec_in_backend npx typeorm-ts-node-commonjs migration:generate "src/migrations/$mig_name" -d "$DATA_SOURCE"
                 fi
                 ;;
             3) 
                 echo "--- Revirtiendo última migración ---"
-                run_in_backend "npx typeorm-ts-node-commonjs migration:revert -d $DATA_SOURCE"
+                exec_in_backend npx typeorm-ts-node-commonjs migration:revert -d "$DATA_SOURCE"
                 ;;
             4) 
                 echo "--- Poblando base de datos con datos de prueba (Seed) ---"
-                run_in_backend "npx ts-node src/database/seed.ts"
+                exec_in_backend npx ts-node src/database/seed.ts
                 ;;
             5) 
                 echo "--- Estado de migraciones (Show) ---"
-                run_in_backend "npx typeorm-ts-node-commonjs migration:show -d $DATA_SOURCE"
+                exec_in_backend npx typeorm-ts-node-commonjs migration:show -d "$DATA_SOURCE"
                 ;;
             6) 
                 read -p "Ingresa el nombre descriptivo para la migración vacía: " mig_name
@@ -126,7 +123,7 @@ db_menu() {
                     echo "Error: El nombre de la migración no puede estar vacío."
                 else
                     echo "--- Creando migración vacía ---"
-                    run_in_backend "npx typeorm-ts-node-commonjs migration:create src/migrations/$mig_name"
+                    exec_in_backend npx typeorm-ts-node-commonjs migration:create "src/migrations/$mig_name"
                 fi
                 ;;
             0) break ;;
