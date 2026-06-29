@@ -69,7 +69,8 @@ services:
       - proxy_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.inmovel-frontend.rule=Host(`${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}`)"
+      - "traefik.docker.network=proxy_network"
+      - "traefik.http.routers.inmovel-frontend.rule=Host(\`${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}\`)"
       - "traefik.http.routers.inmovel-frontend.entrypoints=${TRAEFIK_ENTRYPOINT}"
       - "traefik.http.routers.inmovel-frontend.tls=true"
       - "traefik.http.routers.inmovel-frontend.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
