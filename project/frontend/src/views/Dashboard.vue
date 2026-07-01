@@ -295,7 +295,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="px-4 py-8 lg:px-8 max-w-[1440px] mx-auto space-y-6 animate-fade-in">
+  <div class="p-4 sm:p-6 md:p-8 max-w-[1440px] mx-auto space-y-8 relative animate-fade-in">
     
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 pb-6 border-b border-slate-100">
       <div>

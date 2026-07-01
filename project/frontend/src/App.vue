@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { token, clearSession } from './utils/auth';
 
 import Sidebar from './components/Sidebar.vue';
 import ToastContainer from './components/ToastContainer.vue';
@@ -9,16 +10,13 @@ const route = useRoute();
 const router = useRouter();
 const mobileMenuOpen = ref(false);
 
-const token = computed(() => localStorage.getItem('inmovel_token'));
 const hideHeader = computed(() => route.name === 'login');
 
 let inactivityTimeout: number | undefined;
 const TIMEOUT_1_HOUR = 3600000;
 
 function logout() {
-  localStorage.removeItem('inmovel_token');
-  localStorage.removeItem('inmovel_user');
-  localStorage.removeItem('inmovel_session_expires');
+  clearSession();
   router.push({ name: 'login' });
 }
 
@@ -65,7 +63,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col md:flex-row bg-sici-background font-sans antialiased text-slate-900">
+  <div class="h-screen flex flex-col md:flex-row bg-sici-background font-sans antialiased text-slate-900 overflow-hidden">
     <header 
       v-if="token && !hideHeader"
       class="md:hidden bg-sici-primary text-white px-4 py-3 flex items-center justify-between shadow-md sticky top-0 z-30"

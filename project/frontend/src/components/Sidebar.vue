@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-const token = computed(() => localStorage.getItem('inmovel_token'));
-const user = computed(() => JSON.parse(localStorage.getItem('inmovel_user') || '{}'));
+import { token, user, clearSession } from '../utils/auth';
 
 const router = useRouter();
 
@@ -23,8 +21,7 @@ function handleNav(view: any) {
 }
 
 function handleLogout() {
-  localStorage.removeItem('inmovel_token'); 
-  localStorage.removeItem('inmovel_user'); 
+  clearSession();
   router.push({ name: 'login' });
   emit('close');
 }
@@ -35,7 +32,7 @@ function handleLogout() {
   <aside 
     v-if="token"
     :class="[
-      'hidden md:flex bg-sici-primary text-white min-h-screen flex-col justify-between shadow-lg shrink-0 transition-all duration-300',
+      'hidden md:flex bg-sici-primary text-white h-screen flex-col justify-between shadow-lg shrink-0 transition-all duration-300',
       isCollapsed ? 'w-20' : 'w-64'
     ]"
   >

@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-const token = computed(() => localStorage.getItem('inmovel_token'));
-const user = computed(() => JSON.parse(localStorage.getItem('inmovel_user') || '{}'));
+import { setSession } from '../utils/auth';
 
 const router = useRouter();
 
@@ -40,9 +38,7 @@ async function handleLogin() {
     if (!res.ok) {
       errorMsg.value = data.error || 'Erro ao iniciar sessão. Verifique as credenciais.';
     } else {
-      localStorage.setItem('inmovel_token', data.token);
-      localStorage.setItem('inmovel_user', JSON.stringify(data.user));
-      localStorage.setItem('inmovel_session_expires', (Date.now() + 3600000).toString());
+      setSession(data.token, data.user);
       router.push({ name: 'dashboard' });
     }
   } catch (err) {

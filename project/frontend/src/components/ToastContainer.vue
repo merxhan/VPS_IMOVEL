@@ -5,7 +5,7 @@ const { toasts, removeToast } = useToast();
 </script>
 
 <template>
-  <div class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 w-full max-w-sm pointer-events-none">
+  <div class="fixed top-4 left-4 right-4 md:top-auto md:bottom-6 md:right-6 md:left-auto w-auto md:w-full md:max-w-sm z-[100] flex flex-col gap-3 pointer-events-none">
     <TransitionGroup 
       name="toast" 
       tag="div" 
@@ -59,10 +59,15 @@ const { toasts, removeToast } = useToast();
 <style scoped>
 .toast-enter-from {
   opacity: 0;
-  transform: translateY(12px) scale(0.95);
+  transform: translateY(-12px) scale(0.95);
+}
+@media (min-width: 768px) {
+  .toast-enter-from {
+    transform: translateY(12px) scale(0.95);
+  }
 }
 .toast-leave-to {
   opacity: 0;
-  transform: translateY(-8px) scale(0.95);
+  transform: scale(0.95);
 }
 </style>
